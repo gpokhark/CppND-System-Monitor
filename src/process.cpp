@@ -43,7 +43,7 @@ void Process::SetCpuUtilization() {
   } else {
     totalTime = uTime + sTime;
     // Uncomment this line to include children processes
-    // totalTime = uTime + sTime + cuTime + csTime;
+    totalTime = uTime + sTime + cuTime + csTime;
     cpu_usage_ = ((totalTime / sysconf(_SC_CLK_TCK)) / float(seconds));
   }
 }
