@@ -20,7 +20,20 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+  pids_ = LinuxParser::Pids();
+  processes_ = {};
+  // Iterate over PIDs to create vector of process objects.
+  for (size_t i = 0; i < pids_.size(); i++) {
+    Process process(pids_[i]);
+    processes_.push_back(process);
+  }
+  // Sort Processes by CPU utilization in descending order.
+  std::sort(processes_.begin(), processes_.end());
+  std::reverse(std::begin(processes_), std::end(processes_));
+
+  return processes_;
+}
 
 // TODO: Return the system's kernel identifier (string)
 std::string System::Kernel() { return LinuxParser::Kernel(); }
