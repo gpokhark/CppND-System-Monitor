@@ -75,8 +75,10 @@ float LinuxParser::MemoryUtilization() {
     while (std::getline(stream, line)) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
-        if (key == "MemTotal:") memTotal = value;
-        else if (key == "MemFree:") memFree = value;
+        if (key == "MemTotal:")
+          memTotal = value;
+        else if (key == "MemFree:")
+          memFree = value;
       }
     }
   }
@@ -85,7 +87,17 @@ float LinuxParser::MemoryUtilization() {
 }
 
 // TODO: Read and return the system uptime
-long LinuxParser::UpTime() { return 0; }
+long LinuxParser::UpTime() {
+  long timeSuspend;
+  std::string line;
+  std::ifstream stream(kProcDirectory + kUptimeFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    linestream >> timeSuspend;
+  }
+  return timeSuspend;
+}
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() { return 0; }
